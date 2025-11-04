@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+      docker {
+        image 'node:20-alpine'
+        args '-u root:root' // optional, gives root access if needed
+       }
+    }
 
     stages {
         stage('Build') {
