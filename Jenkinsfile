@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building...'
+                echo 'Building appp...'
                 sh 'npm ci'
                 sh 'npm run build --configuration production'
             }
