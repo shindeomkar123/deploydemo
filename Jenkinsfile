@@ -5,6 +5,8 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building...'
+                sh 'npm ci'
+                sh 'npm run build --configuration production'
             }
         }
         stage('Test') {
