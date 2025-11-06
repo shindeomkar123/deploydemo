@@ -1,33 +1,21 @@
 pipeline {
     agent any
-
-    tools {
-        nodejs 'nodejs' // Name of NodeJS tool configured in Jenkins
-    }
-
+    
     stages {
-        stage('Build') {
+        stage('Build Docker Image') {
+            echo 'Building Docker image for Angular application...'
             steps {
-                echo 'Building appp...'
-                sh 'npm ci'
-                sh 'npm run build --configuration production'
+                sh 'docker build -t angular-app:${BUILD_NUMBER} .'
             }
         }
-        stage('Docker Build') {
-            steps {
-                echo 'Building Docker image...'
-                sh 'docker build -t my-app-image:latest .'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing...'
-            }
-        }
+        
         stage('Deploy') {
             steps {
-                echo 'Deploying...'
-                sh 'docker run -d --rm -p 80:80 --name my-app-container my-app-image:latest'
+                sh '''
+                    docker stop angular-app || true
+                    docker rm angular-app || true
+                    docker run -d --name angular-app -p 80:80 angular-app:${BUILD_NUMBER}
+                '''
             }
         }
     }
