@@ -3,7 +3,6 @@ pipeline {
     
     stages {
         stage('Build Docker Image') {
-            echo 'Building Docker image for Angular application...'
             steps {
                 sh 'docker build -t angular-app:${BUILD_NUMBER} .'
             }
